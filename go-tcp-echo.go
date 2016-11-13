@@ -29,18 +29,17 @@ func main() {
 }
 
 func handleRequest(conn net.Conn) {
-	log.Println("Accepted new connection.")
+	log.Println("Accepted new connection from", conn.RemoteAddr())
 	defer conn.Close()
 	defer log.Println("Closed connection.")
-
+	buf := make([]byte, 1024)
+	
 	for {
-		buf := make([]byte, 1024)
 		size, err := conn.Read(buf)
 		if err != nil {
 			return
 		}
 		data := buf[:size]
-		log.Println("Read new data from connection", data)
 		conn.Write(data)
 	}
 }
